@@ -6,8 +6,6 @@ public class Main {
         ReservationAll reservePt1 = new ReservationAll("reservas.txt");
         File file = reservePt1.createFile();  // guardar referencia al archivo creado
 
-        System.out.println(reservePt1);
-
         reservePt1.writeHeaders(
                 file,
                 ReservationFields.SEAT_NUMBER,
@@ -16,5 +14,6 @@ public class Main {
         );
 
         reservePt1.pickHowManyRegisters();
+        reservePt1.mostrar();
     }
 }

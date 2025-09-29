@@ -1,9 +1,8 @@
 import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationAll {
     private final String fileName;
@@ -146,9 +145,57 @@ public class ReservationAll {
         }
     }
 
-    // --------------- OVERRIDES ----------------
-    @Override
-    public String toString() {
-        return "ReservationAll{fileName='" + fileName + "'}";
+    public void mostrar() {
+        List<String[]> reservas = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // CSV esperado: asiento,nombre,clase,(destino opcional)
+                String[] parts = line.split(",");
+                reservas.add(parts);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("❌ No se encontró el archivo de reservas. Verifica la ruta o si existe.", e);
+        } catch (IOException e) {
+            throw new RuntimeException("💥 Error de entrada/salida al procesar el archivo de reservas.", e);
+        }
+
+        // Encabezado bonito
+        System.out.println("╔══════════════════════════════════════╗");
+        System.out.println("║          📖 RESERVAS LOG             ║");
+        System.out.println("╚══════════════════════════════════════╝\n");
+
+        // Detalle
+        System.out.println("➡ Detalle de reservas:");
+        System.out.println("─────────────────────────────");
+
+//        int countBusiness = 0;
+        for (int i = 1; i < reservas.size(); i++) {
+            String[] r = reservas.get(i);
+
+            String asiento   = r[0].trim();
+            String pasajero  = r[1].trim();
+            String clase     = r[2].trim();
+            String destino   = (r.length > 3 && !r[3].trim().isEmpty()) ? r[3].trim() : "N/A";
+
+            System.out.printf(
+                    "#%d | 🪑 Asiento: %-5s 👤 Pasajero: %-15s 🎟 Clase: %-10s 🌍 Destino: %s%n",
+                    (i), asiento, pasajero, clase, destino
+            );
+
+//            if ("Business".equalsIgnoreCase(clase)) {
+//                countBusiness++;
+//            }
+        }
+
+        // Estadísticas
+        System.out.println("\n📊 Estadísticas");
+        System.out.println("─────────────────────────────");
+        System.out.printf("✔ Total de reservas        : %d%n", reservas.size()-1);
+//        System.out.printf("✔ Pasajeros en Business    : %d%n", countBusiness);
+
+        // Final
+        System.out.println("\n🎯 Proceso completado con éxito");
     }
 }
