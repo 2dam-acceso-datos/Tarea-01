@@ -180,18 +180,26 @@ public class ReservationAll {
             String asiento   = r[0].trim();
             String pasajero  = r[1].trim();
             String clase     = r[2].trim();
-            String destino   = (r.length > 3 && !r[3].trim().isEmpty()) ? r[3].trim() : "N/A";
 
-            System.out.printf(
-                    "#%d | 🪑 Asiento: %-5s 👤 Pasajero: %-15s 🎟 Clase: %-10s 🌍 Destino: %s%n",
-                    (i), asiento, pasajero, clase, destino
-            );
+            if (has4Fields) {
+                String destino = (r.length > 3 && !r[3].trim().isEmpty()) ? r[3].trim() : "N/A";
+                System.out.printf(
+                        "#%d | 🪑 Asiento: %-5s 👤 Pasajero: %-15s 🎟 Clase: %-10s 🌍 Destino: %s%n",
+                        (i), asiento, pasajero, clase, destino
+                );
+            } else {
+                System.out.printf(
+                        "#%d | 🪑 Asiento: %-5s 👤 Pasajero: %-15s 🎟 Clase: %-10s%n",
+                        (i), asiento, pasajero, clase
+                );
+            }
         }
 
         // Estadísticas
         System.out.println("\n📊 Estadísticas");
         System.out.println("─────────────────────────────");
-        System.out.printf("✔ Total de reservas        : %d%n", reservas.size()-1);
+        System.out.printf("✔ Total de reservas            : %d%n", reservas.size()-1);
+
         // Si hay claseFiltro, contamos esa clase
         if (reservationClass.length > 0) {
             String claseBuscada = reservationClass[0].name().toLowerCase();
@@ -200,7 +208,7 @@ public class ReservationAll {
                     .filter(r -> r.length > 2 && claseBuscada.equalsIgnoreCase(r[2].trim()))
                     .count();
 
-            System.out.printf("✔ Pasajeros en %s : %d%n", claseBuscada, count);
+            System.out.printf("✔ Pasajeros en %s        : %d%n", claseBuscada, count);
         }
 
         // Final
