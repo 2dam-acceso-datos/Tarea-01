@@ -14,6 +14,7 @@ public class Main {
         );
 
         reservePt1.pickHowManyRegisters();
-        reservePt1.logguer();
+//        reservePt1.logguer();
+        reservePt1.logguer(ReservationClass.BUSINESS);
     }
 }
