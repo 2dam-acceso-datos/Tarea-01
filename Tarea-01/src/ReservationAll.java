@@ -77,7 +77,11 @@ public class ReservationAll {
     public void writeReservation() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
             // Opciones para la columna de clases de la reserva.
-            String[] clases = {"Económica", "Ejecutiva", "Primera Clase"};
+            String[] clases = {
+                    String.valueOf(ReservationClass.ECONOMY),
+                    String.valueOf(ReservationClass.BUSINESS),
+                    String.valueOf(ReservationClass.FIRST)
+            };
 
             String reservationDataSeat;
             String reservationDataName;
@@ -145,7 +149,7 @@ public class ReservationAll {
         }
     }
 
-    public void mostrar() {
+    public void logguer(ReservationClass... reservationClass) {
         List<String[]> reservas = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -170,7 +174,6 @@ public class ReservationAll {
         System.out.println("➡ Detalle de reservas:");
         System.out.println("─────────────────────────────");
 
-//        int countBusiness = 0;
         for (int i = 1; i < reservas.size(); i++) {
             String[] r = reservas.get(i);
 
@@ -183,19 +186,32 @@ public class ReservationAll {
                     "#%d | 🪑 Asiento: %-5s 👤 Pasajero: %-15s 🎟 Clase: %-10s 🌍 Destino: %s%n",
                     (i), asiento, pasajero, clase, destino
             );
-
-//            if ("Business".equalsIgnoreCase(clase)) {
-//                countBusiness++;
-//            }
         }
 
         // Estadísticas
         System.out.println("\n📊 Estadísticas");
         System.out.println("─────────────────────────────");
         System.out.printf("✔ Total de reservas        : %d%n", reservas.size()-1);
-//        System.out.printf("✔ Pasajeros en Business    : %d%n", countBusiness);
+        // Si hay claseFiltro, contamos esa clase
+        if (reservationClass.length > 0) {
+            String claseBuscada = reservationClass[0].name().toLowerCase();
+            long count = reservas.stream()
+                    .skip(1) // saltamos encabezado
+                    .filter(r -> r.length > 2 && claseBuscada.equalsIgnoreCase(r[2].trim()))
+                    .count();
+
+            System.out.printf("✔ Pasajeros en %s : %d%n", claseBuscada, count);
+        }
 
         // Final
         System.out.println("\n🎯 Proceso completado con éxito");
+    }
+
+    @Override
+    public String toString() {
+        return "ReservationAll{" +
+                "fileName='" + fileName + '\'' +
+                ", has4Fields=" + has4Fields +
+                '}';
     }
 }

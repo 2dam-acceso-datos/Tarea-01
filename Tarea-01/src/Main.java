@@ -14,6 +14,6 @@ public class Main {
         );
 
         reservePt1.pickHowManyRegisters();
-        reservePt1.mostrar();
+        reservePt1.logguer();
     }
 }
