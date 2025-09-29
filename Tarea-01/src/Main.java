@@ -8,11 +8,13 @@ public class Main {
 
         System.out.println(reservePt1);
 
-        ReservationAll.writeHeaders(
+        reservePt1.writeHeaders(
                 file,
                 ReservationFields.SEAT_NUMBER,
                 ReservationFields.PASSENGER_NAME,
                 ReservationFields.CLASS
         );
+
+        reservePt1.pickHowManyRegisters();
     }
 }
