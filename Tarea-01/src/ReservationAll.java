@@ -4,6 +4,9 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Utils.Utils.capitalizeWords;
+import static java.util.Arrays.stream;
+
 public class ReservationAll {
     private final String fileName;
     private boolean has4Fields = false;
@@ -85,15 +88,60 @@ public class ReservationAll {
 
             String reservationDataSeat;
             String reservationDataName;
+            boolean itsOkey;
 
             // Bucle hasta que el usuario ingrese algo válido
             do {
-                reservationDataSeat = JOptionPane.showInputDialog("Ingrese el número de asiento");
-            } while (reservationDataSeat == null || reservationDataSeat.trim().isEmpty());
+                itsOkey = false;
+                reservationDataSeat = JOptionPane.showInputDialog("Ingrese el número de asiento").trim();
+                if (reservationDataSeat.isEmpty()) {
+                    JOptionPane.showMessageDialog(null,
+                            "⚠️ El campo está vacío.",
+                            "Error de validación",
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (reservationDataSeat.length() != 3) {
+                    JOptionPane.showMessageDialog(null,
+                            "❌ El número de asiento no es válido.",
+                            "Error de validación",
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (!reservationDataSeat.matches("^(?=.*[0-9].*[0-9])(?=.*[A-Z]).+$")) {
+                    JOptionPane.showMessageDialog(null,
+                            "❌ El campo debe contener 2 números y 1 mayúscula.",
+                            "Error de validación",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // OK
+                    itsOkey = true;
+                    JOptionPane.showMessageDialog(null,
+                            "✅ Dato válido: " + reservationDataSeat,
+                            "Correcto",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } while (!itsOkey);
 
             do {
-                reservationDataName = JOptionPane.showInputDialog("Ingrese el nombre del pasajero");
-            } while (reservationDataName == null || reservationDataName.trim().isEmpty());
+                itsOkey = false;
+                reservationDataName = JOptionPane.showInputDialog("Ingrese el nombre del pasajero (máx 32 carácteres)").trim();
+                if (reservationDataName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null,
+                            "⚠️ El campo está vacío.",
+                            "Error de validación",
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (reservationDataName.length() > 32) {
+                    JOptionPane.showMessageDialog(null,
+                            "❌ El nombre super los carácteres máximo (32).",
+                            "Error de validación",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // OK
+                    itsOkey = true;
+                    JOptionPane.showMessageDialog(null,
+                            "✅ Dato válido: " + reservationDataName,
+                            "Correcto",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    reservationDataName = capitalizeWords(reservationDataName);
+                }
+            } while (!itsOkey);
 
             String seleccion = (String) JOptionPane.showInputDialog(
                     null,   // no hay ventana padre
@@ -113,7 +161,7 @@ public class ReservationAll {
                         "Destino",
                         JOptionPane.QUESTION_MESSAGE,
                         null,
-                        java.util.Arrays.stream(Destinations.values()).map(Enum::name).toArray(),
+                        stream(Destinations.values()).map(Enum::name).toArray(),
                         null
                 );
                 reservationData += ", " + reservationDataDestination;
