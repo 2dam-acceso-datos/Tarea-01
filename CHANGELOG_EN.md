@@ -4,11 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and the project aims to follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.3.0] - 2025-09-30
+### Added
+- Implementation of records in the file `reserves_maestro.txt`
 
 ## [1.2.0]
 ### Added
-- Headers on `reservas_maestro.txt` file.
+- Headers on `reserves_maestro.txt` file.
 
 ## [1.1.0]
 ### Added

@@ -4,13 +4,15 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y este proyecto intenta adherirse a [Semantic Versioning](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [1.3.0] - 2025-09-30
+### Añadido
+- Implementación de registros en el fichero `reservas_maestro.txt`
 
-## [1.2.0]
+## [1.2.0] - 2025-09-30
 ### Añadido
 - Encabezados en el fichero `reservas_maestro.txt`.
 
-## [1.1.0]
+## [1.1.0] - 2025-09-30
 ### Añadido
 - Implementar la creación del fichero `reservas_maestro.txt`.
 
