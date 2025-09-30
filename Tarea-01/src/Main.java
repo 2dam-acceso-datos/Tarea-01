@@ -4,10 +4,10 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         ReservationAll reservePt1 = new ReservationAll("reservas.txt");
-        File file = reservePt1.createFile();  // guardar referencia al archivo creado
+        File file1 = reservePt1.createFile();  // guardar referencia al archivo creado
 
         reservePt1.writeHeaders(
-                file,
+                file1,
                 ReservationFields.SEAT_NUMBER,
                 ReservationFields.PASSENGER_NAME,
                 ReservationFields.CLASS
@@ -18,5 +18,6 @@ public class Main {
         reservePt1.logguer(ReservationClass.BUSINESS);
 
         ReservationAll reservaPt2 = new ReservationAll(true, "reservas_maestro.txt");
+        File file2 = reservaPt2.createFile();  // guardar referencia al archivo creado
     }
 }
