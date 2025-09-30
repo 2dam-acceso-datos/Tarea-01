@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [1.3.0] - 2025-09-30
 ### Added
-- Implementation of records in the file `reserves_maestro.txt`
+- Implementation of records in the file `reserves_maestro.txt`.
+- Maximum characters in the fields.
+- Better error control.
 
 ## [1.2.0]
 ### Added
