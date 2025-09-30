@@ -107,7 +107,15 @@ public class ReservationAll {
             String reservationData = reservationDataSeat + ", " + reservationDataName + ", " + seleccion;
 
             if (has4Fields) {
-                String reservationDataDestination = JOptionPane.showInputDialog("Ingrese el destino del vuelo");
+                String reservationDataDestination = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Ingrese el destino del vuelo",
+                        "Destino",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        java.util.Arrays.stream(Destinations.values()).map(Enum::name).toArray(),
+                        null
+                );
                 reservationData += ", " + reservationDataDestination;
             }
 
