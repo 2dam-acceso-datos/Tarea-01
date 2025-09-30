@@ -6,7 +6,9 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [1.3.0] - 2025-09-30
 ### Añadido
-- Implementación de registros en el fichero `reservas_maestro.txt`
+- Implementación de registros en el fichero `reservas_maestro.txt`.
+- Máximo de carácteres en los campos.
+- Mejor control de errores.
 
 ## [1.2.0] - 2025-09-30
 ### Añadido
