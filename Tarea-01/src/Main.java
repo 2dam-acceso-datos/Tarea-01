@@ -17,7 +17,15 @@ public class Main {
 //        reservePt1.logguer();
         reservePt1.logguer(ReservationClass.BUSINESS);
 
-        ReservationAll reservaPt2 = new ReservationAll(true, "reservas_maestro.txt");
-        File file2 = reservaPt2.createFile();  // guardar referencia al archivo creado
+        ReservationAll reservePt2 = new ReservationAll(true, "reservas_maestro.txt");
+        File file2 = reservePt2.createFile();  // guardar referencia al archivo creado
+
+        reservePt2.writeHeaders(
+                file2,
+                ReservationFields.SEAT_NUMBER,
+                ReservationFields.PASSENGER_NAME,
+                ReservationFields.CLASS,
+                ReservationFields.DESTINATION
+        );
     }
 }
