@@ -6,9 +6,9 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 ### Añadido
-- Espacio reservado para próximos cambios.
+- Implementar la creación del fichero `reservas_maestro.txt`
 
-## [0.3.0] - 2025-09-29
+## [1.0.0] - 2025-09-29
 ### Añadido
 - Registro en consola con formato enriquecido y estadísticas agregadas para todas las reservas.
 - Filtro opcional por clase de reserva al generar el log.

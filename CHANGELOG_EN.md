@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and the project aims to follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.1.0]
 ### Added
 - Placeholder for upcoming changes.
 
-## [0.3.0] - 2025-09-29
+## [1.0.0] - 2025-09-29
 ### Added
 - Rich console log with aggregated statistics for every reservation.
 - Optional class-based filtering when rendering the log.
