@@ -1,9 +1,11 @@
+package Reservation;
+
 import javax.swing.*;
 import java.io.*;
 import java.nio.file.AccessDeniedException;
 import java.util.*;
 
-import static Utils.Utils.capitalizeWords;
+import static Utils.Utils.*;
 import static java.util.Arrays.stream;
 
 public class ReservationAll {
@@ -52,36 +54,24 @@ public class ReservationAll {
         }
     }
 
-    public void createandFillFileByDestination() throws IOException {
+    public void createandFillFileByDestination(ReservationFields field) throws IOException {
         if (!has4Fields) {
             throw new IllegalStateException("La opción de crear archivos por destino requiere el destino.");
         }
 
         // Mapa destino -> reservas
-        Map<String, List<String[]>> reservasPorDestino = new HashMap<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            boolean isHeader = true;
-
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-
-                if (isHeader) {
-                    isHeader = false; // saltamos encabezado
-                    continue;
-                }
-
-                String destino = (parts.length > 3 && !parts[3].trim().isEmpty())
-                        ? parts[3].trim()
-                        : "N/A";
-
-                reservasPorDestino.computeIfAbsent(destino, k -> new ArrayList<>()).add(parts);
-            }
+        Map<String, List<String[]>> reservasPorDestino = getUniqueDestinationsWithRecords(field);
+        if (reservasPorDestino.isEmpty()) {
+            System.out.printf("No hay reservas para procesar con el destino %s.", field.name());
+            return;
         }
 
         // Crear un archivo por cada destino
         for (Map.Entry<String, List<String[]>> entry : reservasPorDestino.entrySet()) {
+            if (!validateReservationRecords(entry.getValue(), (has4Fields) ? 4 : 3)) {
+                return; // si hay error, salimos
+            }
+
             String dest = entry.getKey();
             List<String[]> reservas = entry.getValue();
 
@@ -103,6 +93,37 @@ public class ReservationAll {
             }
 
             System.out.println("Archivo generado para destino: " + dest + " -> " + auxFile.getAbsolutePath());
+        }
+    }
+
+    private Map<String, List<String[]>> getUniqueDestinationsWithRecords(ReservationFields field) throws IOException {
+        // Mapa destino -> reservas
+        Map<String, List<String[]>> reservasPorDestino = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            boolean isHeader = true;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(","); // CSV esperado: asiento,nombre,clase,destino
+
+                if (isHeader) {
+                    isHeader = false; // saltamos encabezado
+                    continue;
+                }
+
+                String destino = switch (field) {
+                    case SEAT_NUMBER -> (!parts[1].trim().isEmpty()) ? parts[1].trim() : null;
+                    case PASSENGER_NAME -> (!parts[1].trim().isEmpty()) ? parts[1].trim() : null;
+                    case CLASS -> (!parts[2].trim().isEmpty()) ? parts[2].trim() : null;
+                    case DESTINATION -> (!parts[3].trim().isEmpty())
+                            ? parts[3].trim() : null;
+                };
+
+                reservasPorDestino.computeIfAbsent(destino, k -> new ArrayList<>()).add(parts);
+            }
+
+            return reservasPorDestino;
         }
     }
 
@@ -131,6 +152,11 @@ public class ReservationAll {
     }
 
     public void writeReservation() {
+        String error;
+        String reservationDataSeat;
+        String reservationDataName;
+        boolean itsOkey;
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
             // Opciones para la columna de clases de la reserva.
             String[] clases = {
@@ -139,29 +165,18 @@ public class ReservationAll {
                     String.valueOf(ReservationClass.FIRST)
             };
 
-            String reservationDataSeat;
-            String reservationDataName;
-            boolean itsOkey;
+
 
             // Bucle hasta que el usuario ingrese algo válido
             do {
                 itsOkey = false;
                 reservationDataSeat = JOptionPane.showInputDialog("Ingrese el número de asiento").trim();
-                if (reservationDataSeat.isEmpty()) {
+                error = validateField(reservationDataSeat, ReservationFields.SEAT_NUMBER);
+                if (error != null) {
                     JOptionPane.showMessageDialog(null,
-                            "⚠️ El campo está vacío.",
+                            error,
                             "Error de validación",
                             JOptionPane.WARNING_MESSAGE);
-                } else if (reservationDataSeat.length() != 3) {
-                    JOptionPane.showMessageDialog(null,
-                            "❌ El número de asiento no es válido.",
-                            "Error de validación",
-                            JOptionPane.ERROR_MESSAGE);
-                } else if (!reservationDataSeat.matches("^(?=.*[0-9].*[0-9])(?=.*[A-Z]).+$")) {
-                    JOptionPane.showMessageDialog(null,
-                            "❌ El campo debe contener 2 números y 1 mayúscula.",
-                            "Error de validación",
-                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     // OK
                     itsOkey = true;
@@ -175,16 +190,13 @@ public class ReservationAll {
             do {
                 itsOkey = false;
                 reservationDataName = JOptionPane.showInputDialog("Ingrese el nombre del pasajero (máx 32 carácteres)").trim();
-                if (reservationDataName.isEmpty()) {
+                error = validateField(reservationDataName, ReservationFields.PASSENGER_NAME);
+
+                if (error != null) {
                     JOptionPane.showMessageDialog(null,
-                            "⚠️ El campo está vacío.",
+                            error,
                             "Error de validación",
                             JOptionPane.WARNING_MESSAGE);
-                } else if (reservationDataName.length() > 32) {
-                    JOptionPane.showMessageDialog(null,
-                            "❌ El nombre super los carácteres máximo (32).",
-                            "Error de validación",
-                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     // OK
                     itsOkey = true;
@@ -286,9 +298,9 @@ public class ReservationAll {
         for (int i = 1; i < reservas.size(); i++) {
             String[] r = reservas.get(i);
 
-            String asiento   = r[0].trim();
-            String pasajero  = r[1].trim();
-            String clase     = r[2].trim();
+            String asiento = r[0].trim();
+            String pasajero = r[1].trim();
+            String clase = r[2].trim();
 
             if (has4Fields) {
                 String destino = (r.length > 3 && !r[3].trim().isEmpty()) ? r[3].trim() : "N/A";
@@ -307,7 +319,7 @@ public class ReservationAll {
         // Estadísticas
         System.out.println("\n📊 Estadísticas");
         System.out.println("─────────────────────────────");
-        System.out.printf("✔ Total de reservas            : %d%n", reservas.size()-1);
+        System.out.printf("✔ Total de reservas            : %d%n", reservas.size() - 1);
 
         // Si hay claseFiltro, contamos esa clase
         if (reservationClass.length > 0) {
@@ -326,7 +338,7 @@ public class ReservationAll {
 
     @Override
     public String toString() {
-        return "ReservationAll{" +
+        return "Reservation.ReservationAll{" +
                 "fileName='" + fileName + '\'' +
                 ", has4Fields=" + has4Fields +
                 '}';

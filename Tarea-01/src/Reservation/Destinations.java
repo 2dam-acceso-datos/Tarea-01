@@ -1,3 +1,5 @@
+package Reservation;
+
 public enum Destinations {
     PARIS,
     LONDRES,
