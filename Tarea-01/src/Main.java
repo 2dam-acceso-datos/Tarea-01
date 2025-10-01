@@ -26,5 +26,7 @@ public class Main {
                 ReservationFields.DESTINATION
         );
         reservePt2.pickHowManyRegisters();
+        reservePt2.createandFillFileByDestination();
+//        reservePt2.logguer(ReservationClass.BUSINESS);
     }
 }
