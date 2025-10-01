@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.io.*;
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static Utils.Utils.capitalizeWords;
 import static java.util.Arrays.stream;
@@ -50,6 +49,60 @@ public class ReservationAll {
             }
         } catch (SecurityException e) {
             throw new AccessDeniedException("Permisos insuficientes: " + file.getAbsolutePath());
+        }
+    }
+
+    public void createandFillFileByDestination() throws IOException {
+        if (!has4Fields) {
+            throw new IllegalStateException("La opción de crear archivos por destino requiere el destino.");
+        }
+
+        // Mapa destino -> reservas
+        Map<String, List<String[]>> reservasPorDestino = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            boolean isHeader = true;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                if (isHeader) {
+                    isHeader = false; // saltamos encabezado
+                    continue;
+                }
+
+                String destino = (parts.length > 3 && !parts[3].trim().isEmpty())
+                        ? parts[3].trim()
+                        : "N/A";
+
+                reservasPorDestino.computeIfAbsent(destino, k -> new ArrayList<>()).add(parts);
+            }
+        }
+
+        // Crear un archivo por cada destino
+        for (Map.Entry<String, List<String[]>> entry : reservasPorDestino.entrySet()) {
+            String dest = entry.getKey();
+            List<String[]> reservas = entry.getValue();
+
+            String cleanDest = dest.toLowerCase().replaceAll("\\s+", "_");
+            ReservationAll aux = new ReservationAll(true, "reservas_" + cleanDest + ".txt");
+            File auxFile = aux.createFile();
+
+            // Abrimos en modo overwrite para limpiar el archivo
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(auxFile, false))) {
+                // Escribir encabezados
+                writer.write("SEAT_NUMBER, PASSENGER_NAME, CLASS, DESTINATION");
+                writer.newLine();
+
+                // Escribir reservas de ese destino
+                for (String[] reserva : reservas) {
+                    writer.write(String.join(", ", reserva));
+                    writer.newLine();
+                }
+            }
+
+            System.out.println("Archivo generado para destino: " + dest + " -> " + auxFile.getAbsolutePath());
         }
     }
 
