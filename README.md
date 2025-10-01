@@ -5,11 +5,11 @@ Este repositorio contiene una aplicación de consola escrita en Java que permite
 ## Características principales
 
 - Creación de archivos de reservas con validación de nombre y permisos.
-- Estructura configurable de campos mediante enumeraciones (`ReservationFields`).
+- Estructura configurable de campos mediante enumeraciones (`Reservation.ReservationFields`).
 - Captura asistida de datos con interfaces emergentes (`JOptionPane`).
 - Registro interactivo para determinar cuántas reservas capturar en una sesión.
 - Visualización formateada de reservas en consola con encabezados y emojis.
-- Estadísticas resumidas, incluido el filtrado opcional por clase (`ReservationClass`).
+- Estadísticas resumidas, incluido el filtrado opcional por clase (`Reservation.ReservationClass`).
 
 ## Requisitos previos
 
@@ -35,14 +35,14 @@ Desde la carpeta `Tarea-01/` que contiene el código fuente (es decir, `Tarea-01
 
 ```bash
 javac -d out src/*.java
-java -cp out Main
+java -cp out Reservation.Main
 ```
 
 Al iniciar, la aplicación solicitará:
 
 1. El número de registros a crear.
 2. El número de asiento, nombre del pasajero y clase para cada reserva.
-3. Opcionalmente, el destino si se inicializa `ReservationAll` con el modo de cuatro campos.
+3. Opcionalmente, el destino si se inicializa `Reservation.ReservationAll` con el modo de cuatro campos.
 
 El resultado se guarda en `reservas.txt` y se muestra un log formateado en la consola.
 
@@ -57,10 +57,10 @@ Tarea-01/
 ├── CHANGELOG_EN.md
 └── Tarea-01/
     └── src/
-        ├── Main.java
-        ├── ReservationAll.java
-        ├── ReservationClass.java
-        └── ReservationFields.java
+        ├── Reservation.Main.java
+        ├── Reservation.ReservationAll.java
+        ├── Reservation.ReservationClass.java
+        └── Reservation.ReservationFields.java
 ```
 
 ## Flujo de trabajo recomendado

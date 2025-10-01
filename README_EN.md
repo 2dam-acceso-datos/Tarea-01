@@ -5,11 +5,11 @@ This repository hosts a console-based Java application that creates and manages 
 ## Key Features
 
 - Reservation file creation with name validation and permission handling.
-- Configurable field structure via enumerations (`ReservationFields`).
+- Configurable field structure via enumerations (`Reservation.ReservationFields`).
 - Assisted data capture using Swing dialog boxes (`JOptionPane`).
 - Interactive prompt to decide how many reservations to capture per session.
 - Console log formatted with headers and emojis for readability.
-- Summary statistics with optional filtering by reservation class (`ReservationClass`).
+- Summary statistics with optional filtering by reservation class (`Reservation.ReservationClass`).
 
 ## Prerequisites
 
@@ -35,14 +35,14 @@ From the `Tarea-01/` folder that hosts the source code (i.e., `Tarea-01/Tarea-01
 
 ```bash
 javac -d out src/*.java
-java -cp out Main
+java -cp out Reservation.Main
 ```
 
 When launched, the application will ask for:
 
 1. The number of reservation records to create.
 2. Seat number, passenger name, and class for each reservation.
-3. Optionally, the destination if `ReservationAll` is initialized with the four-field mode.
+3. Optionally, the destination if `Reservation.ReservationAll` is initialized with the four-field mode.
 
 Results are stored in `reservas.txt`, and a formatted log is printed to the console.
 
@@ -57,10 +57,10 @@ Tarea-01/
 ├── CHANGELOG_EN.md
 └── Tarea-01/
     └── src/
-        ├── Main.java
-        ├── ReservationAll.java
-        ├── ReservationClass.java
-        └── ReservationFields.java
+        ├── Reservation.Main.java
+        ├── Reservation.ReservationAll.java
+        ├── Reservation.ReservationClass.java
+        └── Reservation.ReservationFields.java
 ```
 
 ## Recommended workflow

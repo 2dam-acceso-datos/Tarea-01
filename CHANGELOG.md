@@ -4,7 +4,13 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y este proyecto intenta adherirse a [Semantic Versioning](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [Unreleased]
+
+## [1.5.0] - 2025-10-01
+### Cambiado
+- Refactorización del código para mejorar la legibilidad y el mantenimiento.
+- Uso de funciones para modularizar la lógica de creación y escritura de archivos.
+- Mejora en la gestión de errores y validaciones de entrada.
 
 ## [1.4.0] - 2025-10-01
 ### Añadido

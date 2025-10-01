@@ -1,3 +1,5 @@
+package Reservation;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -13,7 +15,7 @@ public class Main {
         );
 //        reservePt1.pickHowManyRegisters();
 //        reservePt1.logguer();
-//        reservePt1.logguer(ReservationClass.BUSINESS);
+//        reservePt1.logguer(Reservation.ReservationClass.BUSINESS);
 
         ReservationAll reservePt2 = new ReservationAll(true, "reservas_maestro.txt");
         File file2 = reservePt2.createFile();  // guardar referencia al archivo creado
@@ -25,8 +27,8 @@ public class Main {
                 ReservationFields.CLASS,
                 ReservationFields.DESTINATION
         );
-        reservePt2.pickHowManyRegisters();
-        reservePt2.createandFillFileByDestination();
-//        reservePt2.logguer(ReservationClass.BUSINESS);
+//        reservePt2.pickHowManyRegisters();
+        reservePt2.createandFillFileByDestination(ReservationFields.DESTINATION);
+//        reservePt2.logguer(Reservation.ReservationClass.BUSINESS);
     }
 }
