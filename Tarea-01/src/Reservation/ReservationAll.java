@@ -336,6 +336,31 @@ public class ReservationAll {
         System.out.println("\n🎯 Proceso completado con éxito");
     }
 
+    // Método estático que recibe un enum de país
+    public static void showReservationsByCountry(Destinations country) throws IOException {
+        // 1. Construir nombre del archivo
+        String fileName = buildFileName(country);
+
+        // 2. Crear referencia al archivo (sin crearlo)
+        File file = new File(fileName);
+
+        // 3. Verificar si existe
+        if (!file.exists() || !file.isFile()) {
+            System.out.println("❌ No existe el archivo: " + fileName);
+            return; // Salir del método
+        }
+
+        // 4. Si existe, mostrar contenido
+        ReservationAll reservationsByCountry = new ReservationAll(fileName);
+        reservationsByCountry.logguer();
+    }
+
+    // Método auxiliar: arma el nombre con prefijo "reservas_"
+    private static String buildFileName(Destinations country) {
+        String normalized = country.name().toLowerCase();  // enum a minúsculas
+        return "reservas_" + normalized + ".txt";
+    }
+
     @Override
     public String toString() {
         return "Reservation.ReservationAll{" +
