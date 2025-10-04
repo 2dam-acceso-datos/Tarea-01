@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.6.0] - 2025-10-04
+### Añadido
+- Mostrar las reservas de un archivo destino específico.
+
 ## [1.5.0] - 2025-10-01
 ### Cambiado
 - Refactorización del código para mejorar la legibilidad y el mantenimiento.

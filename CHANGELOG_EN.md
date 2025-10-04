@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [1.6.0] - 2025-10-04
+### Added
+- Display the reservations for a specific destination file.
+
 ## [1.5.0] - 2025-10-01
 ### Changed
 - Code refactorization to improve readability and maintenance.
