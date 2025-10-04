@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [3.0.0] - 2025-10-04
+### Añadido
+- Si las reservas no son válidas no se crean ficheros de destino y se reportan en los logs además de mostrar la cantidad de registros válidos.
+
 ## [2.3.0] - 2025-10-04
 ### Añadido
 - Crear ficheros de destino solo si hay registros válidos sino se reportan en los logs.

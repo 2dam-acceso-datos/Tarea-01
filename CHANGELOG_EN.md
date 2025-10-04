@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [3.0.0] - 2025-10-04
+### Added
+- If the reservations are invalid, no destination files are created and they are reported in the logs, in addition to displaying the number of valid records.
+
 ## [2.3.0] - 2025-10-04
 ### Added
 - Create destination files only if there are valid records; otherwise, report them in the logs.
