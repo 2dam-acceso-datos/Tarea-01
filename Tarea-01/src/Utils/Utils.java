@@ -3,6 +3,11 @@ package Utils;
 
 import Reservation.ReservationFields;
 
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
@@ -94,4 +99,58 @@ public class Utils {
         };
     }
 
+    public static void processReservationFile(
+            File inputFile,
+            int expectedFieldsCount
+    ) throws IOException {
+
+        List<String[]> records = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                records.add(line.split(","));
+            }
+        }
+
+        File errorLog = new File("registro_errores.log");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        for (String[] row : records) {
+            if (row.length != expectedFieldsCount) {
+                logError(errorLog, row, "Número incorrecto de campos (esperados " + expectedFieldsCount + ")");
+                continue;
+            }
+
+            boolean valid = true;
+            String destination = "";
+            for (int i = 0; i < expectedFieldsCount; i++) {
+                String field = row[i].trim();
+                ReservationFields type = ReservationFields.values()[i];
+                String error = validateField(field, type);
+                if (error != null) {
+                    logError(errorLog, row, error);
+                    valid = false;
+                    break;
+                }
+                if (type == ReservationFields.DESTINATION) destination = field;
+            }
+
+            if (valid) {
+                File validFile = new File("reservas_" + destination + ".txt");
+                try (FileWriter fw = new FileWriter(validFile, true)) {
+                    fw.write(String.join(",", row) + System.lineSeparator());
+                }
+            }
+        }
+    }
+
+    private static void logError(File logFile, String[] row, String description) {
+        try (FileWriter fw = new FileWriter(logFile, true)) {
+            String timestamp = LocalDateTime.now(ZoneOffset.UTC)
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            fw.write(timestamp + ", " + String.join(",", row) + ", " + description + System.lineSeparator());
+        } catch (IOException e) {
+            System.err.println("❌ Error escribiendo en el log: " + e.getMessage());
+        }
+    }
 }
