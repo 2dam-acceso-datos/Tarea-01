@@ -2,6 +2,7 @@ package Reservation;
 
 import java.io.File;
 import java.io.IOException;
+import Utils.Utils;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -41,5 +42,7 @@ public class Main {
                 ReservationFields.DESTINATION
         );
         // El fichero se le ha rellenado a mano con errores para probar la validación.
+
+        Utils.processReservationFile(file3, 4);
     }
 }
