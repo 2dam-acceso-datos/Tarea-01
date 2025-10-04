@@ -6,23 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
-## [3.0.0] - 2025-10-04
-### Added
-- If the reservations are invalid, no destination files are created and they are reported in the logs, in addition to displaying the number of valid records.
-
-## [2.3.0] - 2025-10-04
-### Added
-- Create destination files only if there are valid records; otherwise, report them in the logs.
-
-## [2.2.0] - 2025-10-04
-### Added
-- Records with errors in the file `reserves_maestro_con_errores.txt`.
-
-## [2.1.0] - 2025-10-04
-### Added
-- Implemented the creation of `reserves_maestro_con_errores.txt` file.
-
-## [2.0.0] - 2025-10-04
+## [1.6.0] - 2025-10-04
 ### Added
 - Display the reservations for a specific destination file.
 
@@ -50,11 +34,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ## [1.1.0]
 ### Added
 - Implemented the creation of `reserves_maestro.txt` file.
-
+- 
 ## [1.0.0] - 2025-09-29
 ### Added
 - Rich console log with aggregated statistics for every reservation.
 - Optional class-based filtering when rendering the log.
+
 ### Fixed
 - Adjusted the reservation output to avoid misalignment in the console view.
 
