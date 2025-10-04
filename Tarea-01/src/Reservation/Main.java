@@ -13,9 +13,8 @@ public class Main {
                 ReservationFields.PASSENGER_NAME,
                 ReservationFields.CLASS
         );
-//        reservePt1.pickHowManyRegisters();
-//        reservePt1.logguer();
-//        reservePt1.logguer(Reservation.ReservationClass.BUSINESS);
+        reservePt1.pickHowManyRegisters();
+        reservePt1.logguer();
 
         ReservationAll reservePt2 = new ReservationAll(true, "reservas_maestro.txt");
         File file2 = reservePt2.createFile();  // guardar referencia al archivo creado
@@ -27,8 +26,11 @@ public class Main {
                 ReservationFields.CLASS,
                 ReservationFields.DESTINATION
         );
-//        reservePt2.pickHowManyRegisters();
+        reservePt2.pickHowManyRegisters();
         reservePt2.createandFillFileByDestination(ReservationFields.DESTINATION);
-//        reservePt2.logguer(Reservation.ReservationClass.BUSINESS);
+        reservePt2.logguer(Reservation.ReservationClass.BUSINESS);
+
+        ReservationAll.showReservationsByCountry(Destinations.TOKIO);
+
     }
 }
