@@ -29,8 +29,16 @@ public class Main {
         reservePt2.pickHowManyRegisters();
         reservePt2.createandFillFileByDestination(ReservationFields.DESTINATION);
         reservePt2.logguer(Reservation.ReservationClass.BUSINESS);
-
         ReservationAll.showReservationsByCountry(Destinations.TOKIO);
 
+        ReservationAll reservePt3 = new ReservationAll(false, "reservas_maestro_con_errores.txt");
+        File file3 = reservePt3.createFile();  // guardar referencia al archivo creado
+        reservePt3.writeHeaders(
+                file3,
+                ReservationFields.SEAT_NUMBER,
+                ReservationFields.PASSENGER_NAME,
+                ReservationFields.CLASS,
+                ReservationFields.DESTINATION
+        );
     }
 }
