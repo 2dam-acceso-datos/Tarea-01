@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [2.3.0] - 2025-10-04
+### Añadido
+- Crear ficheros de destino solo si hay registros válidos sino se reportan en los logs.
+
 ## [2.2.0] - 2025-10-04
 ### Añadido
 - Registros con errores en el fichero `reservas_maestro_con_errores.txt`.
