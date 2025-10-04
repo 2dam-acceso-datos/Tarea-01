@@ -1,6 +1,5 @@
 package Utils;
 
-
 import Reservation.ReservationFields;
 
 import java.io.*;
@@ -9,7 +8,19 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Utilidades de propósito general que complementan el flujo principal de la aplicación. Incluye
+ * operaciones de formato de texto, validación de registros y procesamiento masivo de archivos de
+ * reservas.
+ */
 public class Utils {
+
+    /**
+     * Capitaliza cada palabra de la cadena recibida preservando los espacios simples entre ellas.
+     *
+     * @param text texto a transformar.
+     * @return el texto con cada palabra iniciando en mayúscula.
+     */
     public static String capitalizeWords(String text) {
         if (text == null || text.isBlank()) {
             return text;
@@ -24,6 +35,14 @@ public class Utils {
         return sb.toString().trim();
     }
 
+    /**
+     * Valida una colección de registros verificando tanto la cantidad de campos como las reglas
+     * específicas asociadas a cada columna.
+     *
+     * @param records             registros a revisar.
+     * @param expectedFieldsCount número de columnas esperadas por registro.
+     * @return {@code true} si todos los registros cumplen con las reglas de validación.
+     */
     public static boolean validateReservationRecords(List<String[]> records, int expectedFieldsCount) {
         ReservationFields[] reservationFields = ReservationFields.values();
 
@@ -60,6 +79,13 @@ public class Utils {
     }
 
 
+    /**
+     * Aplica reglas de validación específicas según el tipo de campo indicado.
+     *
+     * @param field            valor a validar.
+     * @param reservationField tipo de campo que determina la validación.
+     * @return {@code null} si el valor es válido o un mensaje descriptivo del error.
+     */
     public static String validateField(String field, ReservationFields reservationField) {
         if (field == null || field.trim().isEmpty()) {
             return "⚠️ El campo " + reservationField.name() + " no puede estar vacío.";
@@ -98,6 +124,14 @@ public class Utils {
         };
     }
 
+    /**
+     * Procesa un archivo de reservas existente, separando los registros válidos por destino y
+     * registrando en un log los fallos detectados.
+     *
+     * @param inputFile           archivo CSV que contiene las reservas a evaluar.
+     * @param expectedFieldsCount número de columnas que cada registro debería poseer.
+     * @throws IOException si ocurre un problema al leer el archivo o al escribir los resultados.
+     */
     public static void processReservationFile(
             File inputFile,
             int expectedFieldsCount
@@ -199,6 +233,13 @@ public class Utils {
     }
 
 
+    /**
+     * Registra un mensaje de error junto con el registro problemático en un archivo de log.
+     *
+     * @param logFile     archivo donde se almacenará el error.
+     * @param row         registro que provocó la incidencia.
+     * @param description detalle del error encontrado.
+     */
     private static void logError(File logFile, String[] row, String description) {
         try (FileWriter fw = new FileWriter(logFile, true)) {
             String timestamp = LocalDateTime.now(ZoneOffset.UTC)
