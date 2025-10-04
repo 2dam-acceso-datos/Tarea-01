@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and the project aims to follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Improved code readability with comprehensive JavaDoc and reorganized usage examples.
+- Updated public documentation (README files and full guide) to reflect the current workflows.
 
 ## [3.0.0] - 2025-10-04
 ### Added
