@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [2.2.0] - 2025-10-04
+### Añadido
+- Registros con errores en el fichero `reservas_maestro_con_errores.txt`.
+
 ## [2.1.0] - 2025-10-04
 ### Añadido
 - La creación del fichero `reservas_maestro_con_errores.txt`.
