@@ -3,11 +3,7 @@ package Utils;
 
 import Reservation.ReservationFields;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
 
 public class Utils {
     public static String capitalizeWords(String text) {
@@ -98,114 +94,4 @@ public class Utils {
         };
     }
 
-    public static void processReservationFile(
-            File inputFile,
-            int expectedFieldsCount
-    ) throws IOException {
-
-        List<String[]> records = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                records.add(line.split(","));
-            }
-        }
-
-        File errorLog = new File("registro_errores.log");
-        if (errorLog.exists()) errorLog.delete(); // limpiar logs previos
-        Map<String, List<String[]>> validByDestination = new LinkedHashMap<>();
-
-        for (String[] row : records) {
-            if (row.length != expectedFieldsCount) {
-                logError(errorLog, row, "Número incorrecto de campos (esperados " + expectedFieldsCount + ")");
-                continue;
-            }
-
-            boolean valid = true;
-            String destination = "";
-
-            for (int i = 0; i < expectedFieldsCount; i++) {
-                String field = row[i].trim();
-                ReservationFields type = ReservationFields.values()[i];
-                String error = validateField(field, type);
-
-                if (error != null) {
-                    logError(errorLog, row, error);
-                    valid = false;
-                    break;
-                }
-
-                if (type == ReservationFields.DESTINATION) destination = field;
-            }
-
-            if (valid) {
-                validByDestination
-                        .computeIfAbsent(destination, k -> new ArrayList<>())
-                        .add(row);
-            }
-        }
-
-        // Escribir los ficheros de salida
-        for (Map.Entry<String, List<String[]>> entry : validByDestination.entrySet()) {
-            String destination = entry.getKey().toLowerCase();
-            List<String[]> validRecords = entry.getValue();
-            File outputFile = new File("reservas_" + destination + ".txt");
-
-            try (FileWriter fw = new FileWriter(outputFile, false)) {
-                for (String[] row : validRecords) {
-                    fw.write(String.join(",", row) + System.lineSeparator());
-                }
-            }
-        }
-
-        // Mostrar resumen
-        System.out.println("\n📦 Resumen de archivos creados:");
-        if (validByDestination.isEmpty()) {
-            System.out.println("⚠ No se generaron archivos de reservas válidas.");
-        } else {
-            for (Map.Entry<String, List<String[]>> entry : validByDestination.entrySet()) {
-                String destination = entry.getKey();
-                List<String[]> validRecords = entry.getValue();
-                System.out.println("\nArchivo: reservas_" + destination + ".txt");
-                for (String[] row : validRecords) {
-                    System.out.println("   - " + String.join(", ", row));
-                }
-            }
-
-            System.out.println("\n📊 Registros válidos por archivo:");
-            for (Map.Entry<String, List<String[]>> entry : validByDestination.entrySet()) {
-                System.out.println(" - reservas_" + entry.getKey() + ".txt: " + entry.getValue().size());
-            }
-
-            int totalValidos = validByDestination.values().stream()
-                    .mapToInt(List::size)
-                    .sum();
-
-            System.out.println("\n✅ Total de registros válidos: " + totalValidos);
-        }
-
-        // Mostrar contenido del log de errores
-        if (errorLog.exists()) {
-            System.out.println("\n📋 Contenido de 'registro_errores.log':");
-            try (BufferedReader br = new BufferedReader(new FileReader(errorLog))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    System.out.println(line);
-                }
-            }
-        } else {
-            System.out.println("\n✅ No se encontraron errores.");
-        }
-    }
-
-
-    private static void logError(File logFile, String[] row, String description) {
-        try (FileWriter fw = new FileWriter(logFile, true)) {
-            String timestamp = LocalDateTime.now(ZoneOffset.UTC)
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            fw.write(timestamp + ", " + String.join(",", row) + ", " + description + System.lineSeparator());
-        } catch (IOException e) {
-            System.err.println("❌ Error escribiendo en el log: " + e.getMessage());
-        }
-    }
 }

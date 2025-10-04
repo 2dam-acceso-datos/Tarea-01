@@ -6,23 +6,7 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [3.0.0] - 2025-10-04
-### Añadido
-- Si las reservas no son válidas no se crean ficheros de destino y se reportan en los logs además de mostrar la cantidad de registros válidos.
-
-## [2.3.0] - 2025-10-04
-### Añadido
-- Crear ficheros de destino solo si hay registros válidos sino se reportan en los logs.
-
-## [2.2.0] - 2025-10-04
-### Añadido
-- Registros con errores en el fichero `reservas_maestro_con_errores.txt`.
-
-## [2.1.0] - 2025-10-04
-### Añadido
-- La creación del fichero `reservas_maestro_con_errores.txt`.
-
-## [2.0.0] - 2025-10-04
+## [1.6.0] - 2025-10-04
 ### Añadido
 - Mostrar las reservas de un archivo destino específico.
 
@@ -63,6 +47,7 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 ### Añadido
 - Cuadro de diálogo con control numérico para definir cuántas reservas capturar en una sesión.
 - Comentarios aclaratorios en el código para facilitar el mantenimiento.
+
 ### Eliminado
 - Importaciones innecesarias detectadas durante la revisión.
 

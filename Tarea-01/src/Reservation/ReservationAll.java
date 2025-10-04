@@ -227,7 +227,7 @@ public class ReservationAll {
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         stream(Destinations.values()).map(Enum::name).toArray(),
-                        stream(Destinations.values()).map(Enum::name).toArray()[0]
+                        null
                 );
                 reservationData += ", " + reservationDataDestination;
             }
