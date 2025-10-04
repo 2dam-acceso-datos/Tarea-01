@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
-## [1.6.0] - 2025-10-04
+## [2.1.0] - 2025-10-04
+### Added
+- Implemented the creation of `reserves_maestro_con_errores.txt` file.
+
+## [2.0.0] - 2025-10-04
 ### Added
 - Display the reservations for a specific destination file.
 
@@ -34,12 +38,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ## [1.1.0]
 ### Added
 - Implemented the creation of `reserves_maestro.txt` file.
-- 
+
 ## [1.0.0] - 2025-09-29
 ### Added
 - Rich console log with aggregated statistics for every reservation.
 - Optional class-based filtering when rendering the log.
-
 ### Fixed
 - Adjusted the reservation output to avoid misalignment in the console view.
 

@@ -6,7 +6,11 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.6.0] - 2025-10-04
+## [2.1.0] - 2025-10-04
+### Añadido
+- La creación del fichero `reservas_maestro_con_errores.txt`.
+
+## [2.0.0] - 2025-10-04
 ### Añadido
 - Mostrar las reservas de un archivo destino específico.
 
@@ -47,7 +51,6 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 ### Añadido
 - Cuadro de diálogo con control numérico para definir cuántas reservas capturar en una sesión.
 - Comentarios aclaratorios en el código para facilitar el mantenimiento.
-
 ### Eliminado
 - Importaciones innecesarias detectadas durante la revisión.
 
