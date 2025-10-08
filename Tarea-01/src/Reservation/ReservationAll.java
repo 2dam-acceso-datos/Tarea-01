@@ -8,25 +8,50 @@ import java.util.*;
 import static Utils.Utils.*;
 import static java.util.Arrays.stream;
 
+/**
+ * Gestiona la creación y explotación de archivos de reservas. Esta clase ofrece utilidades para
+ * generar ficheros CSV, capturar información mediante cuadros de diálogo y realizar operaciones de
+ * reporte o particionado por destino.
+ */
 public class ReservationAll {
     private final String fileName;
     private boolean has4Fields = false;
 
-    // ------------- CONSTRUCTORS ----------------
+    /**
+     * Crea una instancia asociada a un archivo de reservas que se inicializa con los campos
+     * estándar (número de asiento, nombre y clase).
+     *
+     * @param fileName nombre del archivo que se gestionará.
+     */
     public ReservationAll(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * Constructor sin argumentos deshabilitado para evitar instancias incompletas.
+     */
     public ReservationAll() {
         throw new UnsupportedOperationException("Introduce los campos necesarios y el nombre del archivo");
     }
 
+    /**
+     * Crea una instancia configurando explícitamente si se trabajará con un cuarto campo (destino).
+     *
+     * @param has4Fields {@code true} si el archivo gestionará también destinos.
+     * @param fileName   nombre del archivo que se gestionará.
+     */
     public ReservationAll(boolean has4Fields, String fileName) {
         this.has4Fields = has4Fields;
         this.fileName = fileName;
     }
 
-    //  ---------------- METHODS ----------------
+    /**
+     * Genera el archivo asociado a la instancia dentro del directorio de trabajo actual. Si el
+     * archivo ya existe se reutiliza.
+     *
+     * @return el objeto {@link File} correspondiente al archivo de reservas.
+     * @throws IOException si el archivo no puede crearse por permisos u otra incidencia de E/S.
+     */
     public File createFile() throws IOException {
         validateInputs();
 
@@ -36,6 +61,15 @@ public class ReservationAll {
         return createFileInternal(directory, fileName);
     }
 
+    /**
+     * Crea físicamente un archivo en el directorio indicado. Se expone como método privado para
+     * facilitar las pruebas unitarias y el reuso en otros contextos.
+     *
+     * @param directory directorio en el que se generará el archivo.
+     * @param fileName  nombre del archivo a crear.
+     * @return referencia al archivo solicitado.
+     * @throws IOException si el archivo no puede crearse.
+     */
     private static File createFileInternal(File directory, String fileName) throws IOException {
         File file = new File(directory, fileName);
 
@@ -54,6 +88,13 @@ public class ReservationAll {
         }
     }
 
+    /**
+     * Genera un archivo independiente por cada destino encontrado en el archivo maestro. Cada
+     * fichero incluirá únicamente las reservas que coinciden con dicho destino.
+     *
+     * @param field campo que se utilizará para discriminar los destinos (habitualmente {@link ReservationFields#DESTINATION}).
+     * @throws IOException si hay problemas al leer o escribir los archivos generados.
+     */
     public void createandFillFileByDestination(ReservationFields field) throws IOException {
         if (!has4Fields) {
             throw new IllegalStateException("La opción de crear archivos por destino requiere el destino.");
@@ -96,6 +137,14 @@ public class ReservationAll {
         }
     }
 
+    /**
+     * Obtiene los destinos únicos presentes en el archivo gestionado y agrupa sus registros
+     * asociados.
+     *
+     * @param field campo que se analizará para construir el índice.
+     * @return mapa donde la clave es el destino y el valor la lista de reservas asociadas.
+     * @throws IOException si ocurre un problema al leer el archivo maestro.
+     */
     private Map<String, List<String[]>> getUniqueDestinationsWithRecords(ReservationFields field) throws IOException {
         // Mapa destino -> reservas
         Map<String, List<String[]>> reservasPorDestino = new HashMap<>();
@@ -127,13 +176,24 @@ public class ReservationAll {
         }
     }
 
+    /**
+     * Verifica que los parámetros mínimos para trabajar con archivos de reserva están presentes.
+     * Lanza una excepción en caso contrario.
+     */
     private void validateInputs() {
         if (fileName == null || fileName.isBlank()) {
             throw new IllegalArgumentException("fileName no puede ser nulo o vacío.");
         }
     }
 
-    // Método para escribir encabezados
+    /**
+     * Escribe los encabezados proporcionados en el archivo de reservas. Solo se ejecuta si el
+     * archivo está vacío para evitar duplicar información.
+     *
+     * @param file    archivo sobre el que se escribirán los encabezados.
+     * @param headers lista de campos a registrar como cabecera.
+     * @throws IOException si ocurre un problema de escritura.
+     */
     public void writeHeaders(File file, ReservationFields... headers) throws IOException {
         boolean fileExists = file.exists() && file.length() > 0;
 
@@ -151,6 +211,11 @@ public class ReservationAll {
         }
     }
 
+    /**
+     * Solicita al usuario los datos de una reserva y los persiste en el archivo asociado a la
+     * instancia. El método se apoya en validaciones de formato para cada campo y muestra mensajes de
+     * confirmación o error según corresponda.
+     */
     public void writeReservation() {
         String error;
         String reservationDataSeat;
@@ -239,6 +304,10 @@ public class ReservationAll {
         }
     }
 
+    /**
+     * Pregunta al usuario cuántas reservas desea crear y repite el proceso de captura tantas veces
+     * como se haya indicado.
+     */
     public void pickHowManyRegisters() {
         SpinnerNumberModel model = new SpinnerNumberModel(
                 1,   // valor inicial
@@ -270,6 +339,12 @@ public class ReservationAll {
         }
     }
 
+    /**
+     * Muestra un informe en consola con el contenido del archivo de reservas. Opcionalmente puede
+     * recibir una clase para calcular estadísticas filtradas.
+     *
+     * @param reservationClass clase de reserva a filtrar (opcional).
+     */
     public void logguer(ReservationClass... reservationClass) {
         List<String[]> reservas = new ArrayList<>();
 
@@ -336,7 +411,13 @@ public class ReservationAll {
         System.out.println("\n🎯 Proceso completado con éxito");
     }
 
-    // Método estático que recibe un enum de país
+    /**
+     * Muestra por consola las reservas almacenadas en el archivo correspondiente al país indicado.
+     * Si el archivo no existe se informa de ello.
+     *
+     * @param country destino del que se desean listar las reservas.
+     * @throws IOException si ocurre un problema al acceder al archivo.
+     */
     public static void showReservationsByCountry(Destinations country) throws IOException {
         // 1. Construir nombre del archivo
         String fileName = buildFileName(country);
@@ -355,12 +436,22 @@ public class ReservationAll {
         reservationsByCountry.logguer();
     }
 
-    // Método auxiliar: arma el nombre con prefijo "reservas_"
+    /**
+     * Genera el nombre de archivo estandarizado para un destino concreto.
+     *
+     * @param country destino a convertir en nombre de archivo.
+     * @return nombre normalizado del archivo.
+     */
     private static String buildFileName(Destinations country) {
         String normalized = country.name().toLowerCase();  // enum a minúsculas
         return "reservas_" + normalized + ".txt";
     }
 
+    /**
+     * Proporciona una representación legible del estado interno, útil para depuración.
+     *
+     * @return cadena con el nombre del archivo y si gestiona destinos.
+     */
     @Override
     public String toString() {
         return "Reservation.ReservationAll{" +

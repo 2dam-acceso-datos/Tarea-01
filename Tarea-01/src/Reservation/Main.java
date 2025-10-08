@@ -2,9 +2,26 @@ package Reservation;
 
 import java.io.File;
 import java.io.IOException;
+
 import Utils.Utils;
 
+/**
+ * Punto de entrada de la aplicación de reservas. Mantiene el flujo original de ejercicios
+ * solicitados para la práctica, con el fin de que pueda revisarse o reproducirse sin sorpresas.
+ */
 public class Main {
+
+    /**
+     * Ejecuta secuencialmente los tres ejercicios planteados en la práctica:
+     * <ol>
+     *     <li>Creación del archivo base de reservas (comentado para conservar la versión inicial).</li>
+     *     <li>Generación del archivo maestro, distribución por destino y filtrado por clase.</li>
+     *     <li>Validación de un archivo con datos erróneos utilizando las utilidades del proyecto.</li>
+     * </ol>
+     *
+     * @param args argumentos de línea de comandos (no utilizados).
+     * @throws IOException si se produce un problema al crear o manipular los archivos requeridos.
+     */
     public static void main(String[] args) throws IOException {
 //        ReservationAll reservePt1 = new ReservationAll("reservas.txt");
 //        File file1 = reservePt1.createFile();  // guardar referencia al archivo creado
@@ -29,7 +46,7 @@ public class Main {
         );
         reservePt2.pickHowManyRegisters();
         reservePt2.createandFillFileByDestination(ReservationFields.DESTINATION);
-        reservePt2.logguer(Reservation.ReservationClass.BUSINESS);
+        reservePt2.logguer(ReservationClass.BUSINESS);
         ReservationAll.showReservationsByCountry(Destinations.TOKIO);
 
         ReservationAll reservePt3 = new ReservationAll(false, "reservas_maestro_con_errores.txt");

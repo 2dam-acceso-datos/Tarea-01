@@ -1,5 +1,9 @@
 package Reservation;
 
+/**
+ * Listado de destinos soportados por el sistema. Se utiliza para estandarizar la escritura en los
+ * archivos CSV y evitar discrepancias en la clasificación por país.
+ */
 public enum Destinations {
     PARIS,
     LONDRES,
